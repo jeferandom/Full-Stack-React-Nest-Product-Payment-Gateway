@@ -1,23 +1,28 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
+
+import { AppController } from './infrastructure/primary/http/controllers/app.controller';
+import { OrderController } from './infrastructure/primary/http/controllers/order.controller';
+import { ProductController } from './infrastructure/primary/http/controllers/product.controller';
+
+import { MongoProductRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.product.repository.impl';
+import { PostgresProductRepositoryImpl } from './infrastructure/secondary/persistence/postgres/postgres.product.repository.impl';
+import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
+
 import { AppService } from './app.service';
-import { OrderController } from './infrastructure/adapters/controllers/http/order.controller';
-import { OrderService } from './application/services/order.service';
-import { ORDER_REPOSITORY } from './domain/ports/order.repository';
-import { OrderRepositoryImpl } from './infrastructure/repositories/order.repository.impl';
-import { ProductController } from './infrastructure/adapters/controllers/http/product.controller';
-import { ProductService } from './application/services/product.service';
-import { PRODUCT_REPOSITORY } from './domain/ports/product.repository';
-import { PostgresProductRepositoryImpl } from './infrastructure/repositories/postgres.product.repository.impl';
-import { MongoProductRepositoryImpl } from './infrastructure/repositories/mongo.product.repository.impl';
+import { OrderService } from './core/application/services/order.service';
+import { ProductService } from './core/application/services/product.service';
+
+import { ORDER_REPOSITORY } from './core/domain/interfaces/secondary/order.repository';
+import { PRODUCT_REPOSITORY } from './core/domain/interfaces/secondary/product.repository';
+
 import { MongooseModule } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
   Product,
   ProductSchema,
   ProductDocument,
-} from './infrastructure/database/schemas/product.schema';
+} from './infrastructure/secondary/persistence/mongodb/schemas/product.schema';
 import { getModelToken } from '@nestjs/mongoose';
 
 @Module({

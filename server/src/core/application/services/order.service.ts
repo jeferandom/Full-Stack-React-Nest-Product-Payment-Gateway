@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Order } from '../../domain/order.entity';
+import { Order } from '../../domain/entities/order.entity';
 import {
   OrderRepository,
   ORDER_REPOSITORY,
-} from '../../domain/ports/order.repository';
+} from '../../../core/domain/interfaces/secondary/order.repository';
 
 @Injectable()
 export class OrderService {

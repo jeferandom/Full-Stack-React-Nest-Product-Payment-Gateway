@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Product } from '../../domain/product.entity';
+import { Product } from '../../domain/entities/product.entity';
 import {
   ProductRepository,
   PRODUCT_REPOSITORY,
-} from '../../domain/ports/product.repository';
+} from '../../../core/domain/interfaces/secondary/product.repository';
 
 @Injectable()
 export class ProductService {
