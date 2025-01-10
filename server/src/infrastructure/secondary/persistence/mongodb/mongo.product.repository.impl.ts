@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
+import { ProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
 import { Product as ProductEntity } from '../../../../core/domain/entities/product.entity';
 import { dummyProducts } from '../../../shared/data/seeds/products.seed';
 
@@ -11,7 +11,7 @@ import {
 } from '../mongodb/schemas/product.schema';
 
 @Injectable()
-export class MongoProductRepositoryImpl implements MongoProductRepository {
+export class MongoProductRepositoryImpl implements ProductRepository {
   constructor(
     @InjectModel(ProductSchema.name)
     private productModel: Model<ProductDocument>,

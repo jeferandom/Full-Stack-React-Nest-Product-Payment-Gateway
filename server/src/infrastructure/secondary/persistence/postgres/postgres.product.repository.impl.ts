@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
+import { ProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
 import { Product } from '../../../../core/domain/entities/product.entity';
 
 @Injectable()
-export class PostgresProductRepositoryImpl
-  implements PostgresProductRepository
-{
+export class PostgresProductRepositoryImpl implements ProductRepository {
   async create(product: Product): Promise<Product> {
     console.log(
       'PostgreSQL: Creating product (temporary implementation)',
