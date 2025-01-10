@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresProductRepository } from '../../domain/ports/product.repository';
-import { Product } from '../../domain/product.entity';
+import { PostgresProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
+import { Product } from '../../../../core/domain/entities/product.entity';
 
 @Injectable()
 export class PostgresProductRepositoryImpl

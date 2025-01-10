@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoProductRepository } from '../../domain/ports/product.repository';
-import { Product as ProductEntity } from '../../domain/product.entity';
-import { dummyProducts } from '../seeder/dummy_products';
+import { MongoProductRepository } from '../../../../core/domain/interfaces/secondary/product.repository';
+import { Product as ProductEntity } from '../../../../core/domain/entities/product.entity';
+import { dummyProducts } from '../../../shared/data/seeds/products.seed';
 
 import {
   Product as ProductSchema,
   ProductDocument,
-} from '../database/schemas/product.schema';
+} from '../mongodb/schemas/product.schema';
 
 @Injectable()
 export class MongoProductRepositoryImpl implements MongoProductRepository {

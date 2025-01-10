@@ -1,4 +1,4 @@
-import { Product } from '../../domain/product.entity';
+import { Product } from '../../../../core/domain/entities/product.entity';
 
 export const dummyProducts: Product[] = [
   {
