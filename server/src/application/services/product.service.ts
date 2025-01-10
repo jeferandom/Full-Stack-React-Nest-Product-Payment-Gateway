@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Product } from '../domain/product.entity';
+import { Product } from '../../domain/product.entity';
 import {
   ProductRepository,
   PRODUCT_REPOSITORY,
-} from '../domain/ports/product.repository';
+} from '../../domain/ports/product.repository';
 
 @Injectable()
 export class ProductService {
@@ -14,5 +14,9 @@ export class ProductService {
 
   async getProduct(id: string): Promise<Product | null> {
     return this.productRepository.findById(id);
+  }
+
+  async seed(): Promise<Product[]> {
+    return this.productRepository.seed();
   }
 }
