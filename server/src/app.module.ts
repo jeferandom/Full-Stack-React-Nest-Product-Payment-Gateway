@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrderController } from './adapters/controllers/order.controller';
@@ -10,9 +11,29 @@ import { ProductService } from './services/product.service';
 import { PRODUCT_REPOSITORY } from './domain/ports/product.repository';
 import { PostgresProductRepositoryImpl } from './adapters/db/postgres.product.repository.impl';
 import { MongoProductRepositoryImpl } from './adapters/db/mongo.product.repository.impl';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  Product,
+  ProductSchema,
+  ProductDocument,
+} from './adapters/db/schemas/product.schema';
+import { getModelToken } from '@nestjs/mongoose';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: `mongodb://${configService.get('DB_URI_MONGO')}/${configService.get('DB_NAME_MONGO')}`,
+      }),
+      inject: [ConfigService],
+    }),
+    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+  ],
   controllers: [AppController, OrderController, ProductController],
   providers: [
     AppService,
@@ -21,10 +42,15 @@ import { MongoProductRepositoryImpl } from './adapters/db/mongo.product.reposito
     { provide: ORDER_REPOSITORY, useClass: OrderRepositoryImpl },
     {
       provide: PRODUCT_REPOSITORY,
-      useClass:
-        process.env.DB_TYPE === 'postgres'
-          ? PostgresProductRepositoryImpl
-          : MongoProductRepositoryImpl,
+      useFactory: (
+        configService: ConfigService,
+        productModel: Model<ProductDocument>,
+      ) => {
+        return configService.get('DB_TYPE') === 'postgres'
+          ? new PostgresProductRepositoryImpl()
+          : new MongoProductRepositoryImpl(productModel);
+      },
+      inject: [ConfigService, getModelToken(Product.name)],
     },
   ],
 })
