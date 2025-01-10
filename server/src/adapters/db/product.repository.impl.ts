@@ -6,10 +6,6 @@ import { Product } from '../../domain/product.entity';
 export class ProductRepositoryImpl implements ProductRepository {
   private products: Map<string, Product> = new Map();
 
-  async save(product: Product): Promise<void> {
-    this.products.set(product.id, product);
-  }
-
   async findById(id: string): Promise<Product | null> {
     return this.products.get(id) || null;
   }

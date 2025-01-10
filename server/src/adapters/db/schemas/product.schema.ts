@@ -6,16 +6,25 @@ export type ProductDocument = HydratedDocument<Product>;
 @Schema(/*{ timestamps: true }*/)
 export class Product {
   @Prop({ required: true, unique: true })
-  id: string;
+  productId: string;
 
   @Prop({ required: true, index: true })
   name: string;
 
   @Prop({ required: true, min: 0 })
   price: number;
+
+  @Prop({ required: true })
+  description: string;
+
+  @Prop({ required: true })
+  image: string;
+
+  @Prop({ required: true })
+  unitsInStock: number;
+
+  @Prop({ required: true })
+  unitsOnOrder: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
-
-// Add compound index for potential name/price queries
-ProductSchema.index({ name: 1, price: 1 });

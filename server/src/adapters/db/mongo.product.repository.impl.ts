@@ -15,23 +15,22 @@ export class MongoProductRepositoryImpl implements MongoProductRepository {
     private productModel: Model<ProductDocument>,
   ) {}
 
-  async save(product: ProductEntity): Promise<void> {
-    const productToSave = new this.productModel({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-    });
-    await productToSave.save();
-  }
-
   async findById(id: string): Promise<ProductEntity | null> {
     try {
       const product = await this.productModel
-        .findOne({ _id: id })
+        .findOne({ productId: id })
         .lean()
         .exec();
       if (!product) return null;
-      return new ProductEntity(product.id, product.name, product.price);
+      return new ProductEntity(
+        product.productId,
+        product.name,
+        product.price,
+        product.description,
+        product.image,
+        product.unitsInStock,
+        product.unitsOnOrder,
+      );
     } catch (error) {
       throw new Error(`Error finding product: ${error.message}`);
     }
