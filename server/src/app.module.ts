@@ -9,9 +9,12 @@ import { MongoProductRepositoryImpl } from './infrastructure/secondary/persisten
 import { PostgresProductRepositoryImpl } from './infrastructure/secondary/persistence/postgres/postgres.product.repository.impl';
 import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
 
-import { AppService } from './app.service';
 import { OrderService } from './core/application/services/order.service';
 import { ProductService } from './core/application/services/product.service';
+import { CreditCardApplicationService } from './core/application/services/credit-card.service';
+import { CreditCardValidatorService } from './core/domain/services/credit-card-validator.service';
+
+import { AppService } from './app.service';
 
 import { ORDER_REPOSITORY } from './core/domain/interfaces/secondary/order.repository';
 import { PRODUCT_REPOSITORY } from './core/domain/interfaces/secondary/product.repository';
@@ -44,6 +47,8 @@ import { getModelToken } from '@nestjs/mongoose';
     AppService,
     OrderService,
     ProductService,
+    CreditCardValidatorService,
+    CreditCardApplicationService,
     { provide: ORDER_REPOSITORY, useClass: OrderRepositoryImpl },
     {
       provide: PRODUCT_REPOSITORY,
