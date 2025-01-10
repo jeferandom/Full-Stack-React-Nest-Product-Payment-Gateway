@@ -2,22 +2,22 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OrderController } from './adapters/controllers/order.controller';
-import { OrderService } from './services/order.service';
+import { OrderController } from './infrastructure/adapters/controllers/http/order.controller';
+import { OrderService } from './application/services/order.service';
 import { ORDER_REPOSITORY } from './domain/ports/order.repository';
-import { OrderRepositoryImpl } from './adapters/db/order.repository.impl';
-import { ProductController } from './adapters/controllers/product.controller';
-import { ProductService } from './services/product.service';
+import { OrderRepositoryImpl } from './infrastructure/repositories/order.repository.impl';
+import { ProductController } from './infrastructure/adapters/controllers/http/product.controller';
+import { ProductService } from './application/services/product.service';
 import { PRODUCT_REPOSITORY } from './domain/ports/product.repository';
-import { PostgresProductRepositoryImpl } from './adapters/db/postgres.product.repository.impl';
-import { MongoProductRepositoryImpl } from './adapters/db/mongo.product.repository.impl';
+import { PostgresProductRepositoryImpl } from './infrastructure/repositories/postgres.product.repository.impl';
+import { MongoProductRepositoryImpl } from './infrastructure/repositories/mongo.product.repository.impl';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
   Product,
   ProductSchema,
   ProductDocument,
-} from './adapters/db/schemas/product.schema';
+} from './infrastructure/database/schemas/product.schema';
 import { getModelToken } from '@nestjs/mongoose';
 
 @Module({

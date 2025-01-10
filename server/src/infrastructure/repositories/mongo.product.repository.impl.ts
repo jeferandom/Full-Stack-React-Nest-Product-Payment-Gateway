@@ -6,7 +6,7 @@ import { Product as ProductEntity } from '../../domain/product.entity';
 import {
   Product as ProductSchema,
   ProductDocument,
-} from './schemas/product.schema';
+} from '../database/schemas/product.schema';
 
 @Injectable()
 export class MongoProductRepositoryImpl implements MongoProductRepository {

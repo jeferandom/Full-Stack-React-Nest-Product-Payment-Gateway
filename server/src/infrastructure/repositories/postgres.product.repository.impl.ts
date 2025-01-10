@@ -6,13 +6,12 @@ import { Product } from '../../domain/product.entity';
 export class PostgresProductRepositoryImpl
   implements PostgresProductRepository
 {
-  // Implementación específica para PostgreSQL
-  async save(product: Product): Promise<void> {
-    // Lógica para guardar el producto en PostgreSQL
-  }
 
   async findById(id: string): Promise<Product | null> {
-    // Lógica para encontrar el producto por ID en PostgreSQL
+    console.log(
+      'PostgreSQL: Finding product by ID (temporary implementation)',
+      id,
+    );
     return null;
   }
 }
