@@ -12,6 +12,13 @@ import { PRODUCT_REPOSITORY } from './domain/ports/product.repository';
 import { PostgresProductRepositoryImpl } from './adapters/db/postgres.product.repository.impl';
 import { MongoProductRepositoryImpl } from './adapters/db/mongo.product.repository.impl';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  Product,
+  ProductSchema,
+  ProductDocument,
+} from './adapters/db/schemas/product.schema';
+import { getModelToken } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -25,6 +32,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
   ],
   controllers: [AppController, OrderController, ProductController],
   providers: [
@@ -34,12 +42,15 @@ import { MongooseModule } from '@nestjs/mongoose';
     { provide: ORDER_REPOSITORY, useClass: OrderRepositoryImpl },
     {
       provide: PRODUCT_REPOSITORY,
-      useFactory: (configService: ConfigService) => {
+      useFactory: (
+        configService: ConfigService,
+        productModel: Model<ProductDocument>,
+      ) => {
         return configService.get('DB_TYPE') === 'postgres'
           ? new PostgresProductRepositoryImpl()
-          : new MongoProductRepositoryImpl();
+          : new MongoProductRepositoryImpl(productModel);
       },
-      inject: [ConfigService],
+      inject: [ConfigService, getModelToken(Product.name)],
     },
   ],
 })
