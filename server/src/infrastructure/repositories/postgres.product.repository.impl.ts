@@ -6,6 +6,13 @@ import { Product } from '../../domain/product.entity';
 export class PostgresProductRepositoryImpl
   implements PostgresProductRepository
 {
+  async create(product: Product): Promise<Product> {
+    console.log(
+      'PostgreSQL: Creating product (temporary implementation)',
+      product,
+    );
+    return product;
+  }
 
   async findById(id: string): Promise<Product | null> {
     console.log(
@@ -13,5 +20,10 @@ export class PostgresProductRepositoryImpl
       id,
     );
     return null;
+  }
+
+  async seed(): Promise<Product[]> {
+    console.log('PostgreSQL: Seeding products (temporary implementation)');
+    return [];
   }
 }
