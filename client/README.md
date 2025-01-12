@@ -48,3 +48,16 @@ export default tseslint.config({
   },
 })
 ```
+
+## Testing
+
+This project uses Vitest for testing. Run the tests using:
+
+```bash
+npm test               # Run tests in watch mode
+npm test -- --ui       # Run tests with UI
+npm test -- --run      # Run tests once
+npm run coverage       # Run coverage
+```
+
+We recommend using the [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) extension for Visual Studio Code to enhance your testing experience.
