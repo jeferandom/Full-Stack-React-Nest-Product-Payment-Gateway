@@ -30,3 +30,5 @@ client/build
 # Specific to server (NestJS)
 server/node_modules
 server/dist
+client/.vscode/launch.json
+client/.vscode/settings.json
