@@ -16,6 +16,7 @@ describe('Product', () => {
         expect(screen.getByText(/Test Product/i)).toBeInTheDocument()
     })
 })
+
 it('shows placeholder when image fails to load', async () => {
     const product = {
         productId: '1',
@@ -27,11 +28,26 @@ it('shows placeholder when image fails to load', async () => {
     };
 
     render(<Product product={product} />);
-    const img = screen.getByRole('img');
-    fireEvent.error(img);
 
-    expect(screen.getByText('Image not available')).toBeInTheDocument();
-    expect(img).not.toBeInTheDocument();
+    // Get original product image
+    const originalImg = screen.getByAltText('Test Product');
+    fireEvent.error(originalImg);
+
+    // Verify placeholder image appears
+    const placeholderImg = screen.getByAltText('Placeholder');
+    expect(placeholderImg).toBeInTheDocument();
+    expect(placeholderImg).toHaveAttribute('src', '/src/assets/placeholder.webp');
+    expect(placeholderImg).toHaveAttribute('width', '300');
+    expect(placeholderImg).toHaveAttribute('height', '300');
+
+    // Verify accessibility text using data-testid
+    const placeholderText = screen.getByTestId('placeholder-text');
+    expect(placeholderText).toBeInTheDocument();
+    expect(placeholderText).toHaveClass('sr-only');
+    expect(placeholderText).toHaveTextContent('Image not available');
+
+    // Verify original image is removed
+    expect(originalImg).not.toBeInTheDocument();
 });
 
 it('renders all product details correctly', () => {

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import './Product.css';
 
+
+export interface ProductType {
+    productId: string;
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    unitsInStock: number;
+}
 interface ProductProps {
-    product: {
-        productId: string;
-        name: string;
-        price: number;
-        description: string;
-        image: string;
-        unitsInStock: number;
-    },
+    product: ProductType;
     renderActions?: () => React.ReactNode;
     className?: string;
 }
@@ -34,13 +37,20 @@ const Product: React.FC<ProductProps> = ({
                     />
                 ) : (
                     <div className="product-image-placeholder">
-                        Image not available
-                    </div>
+                            <img
+                                src="/src/assets/placeholder.webp"
+                                alt="Placeholder"
+                                className="placeholder-image"
+                                width="300"
+                                height="300"
+                            />
+                            <span className="sr-only" data-testid="placeholder-text">Image not available</span>
+                        </div>
                 )}
             </div>
             <div className="product-details">
                 <h2>{product.name}</h2>
-                <p className="price">${product.price}</p>
+                <h3 className="price">${product.price}</h3>
                 <p>{product.description}</p>
                 <p className="stock">Stock: {product.unitsInStock}</p>
             </div>
