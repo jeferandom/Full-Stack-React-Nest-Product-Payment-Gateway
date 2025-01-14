@@ -1,18 +1,16 @@
-import Product from './components/product/Product'
+import { BrowserRouter, Routes, Route } from "react-router";
 import './App.css'
+import SingleProductPage from './pages/SingleProductPage.tsx'
 
 function App() {
 
   return (
     <>
-      <Product product={{
-        "productId": "2",
-        "name": "Product 2",
-        "price": 20000,
-        "description": "Product 2 description",
-        "image": "https://via.placeholder.com/150",
-        "unitsInStock": 20
-      }} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/product/:productId" element={<SingleProductPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

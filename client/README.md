@@ -48,6 +48,39 @@ export default tseslint.config({
   },
 })
 ```
+## Project Structure
+
+This project follows a layered architecture pattern:
+
+### Components (`/components`)
+- Presentational components focused on UI
+- Receive data through props
+- Handle styling and layout
+- No business logic or data fetching
+
+### Containers (`/containers`)
+- Smart components that manage data and state
+- Connect to data sources/hooks
+- Pass data down to views/components
+- Handle business logic
+
+### Views (`/views`)
+- Compose multiple components
+- Handle loading/error states
+- Manage UI-specific logic
+- Bridge between containers and components
+
+### Pages (`/pages`)
+- Map to routes
+- Handle URL parameters
+- Implement layouts
+- Orchestrate containers and views
+
+### App (`App.tsx`)
+- Root component
+- Route configuration
+- Global providers/context
+- Application structure
 
 ## Testing
 

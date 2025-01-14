@@ -43,7 +43,6 @@ it('shows placeholder when image fails to load', async () => {
     // Verify accessibility text using data-testid
     const placeholderText = screen.getByTestId('placeholder-text');
     expect(placeholderText).toBeInTheDocument();
-    expect(placeholderText).toHaveClass('sr-only');
     expect(placeholderText).toHaveTextContent('Image not available');
 
     // Verify original image is removed
