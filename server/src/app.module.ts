@@ -35,9 +35,15 @@ import { getModelToken } from '@nestjs/mongoose';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: `mongodb://${configService.get('DB_URI_MONGO')}/${configService.get('DB_NAME_MONGO')}`,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const isLocal = configService.get('DB_HOST') === 'localhost';
+        const uri = isLocal
+          ? configService.get('DB_URI_MONGO_LOCAL')
+          : configService.get('DB_URI_MONGO_SERVER');
+        return {
+          uri: `${uri}${configService.get('DB_NAME_MONGO')}`,
+        };
+      },
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
