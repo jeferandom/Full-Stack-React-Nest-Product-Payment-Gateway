@@ -1,9 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    https: process.env.NODE_ENV !== "development",
+  },
+  build: {
+    sourcemap: process.env.NODE_ENV === "development",
+  },
   test: {
     environment: "jsdom",
     globals: true,

@@ -48,3 +48,4 @@ client/coverage/src/main.tsx.html
 client/coverage/src/components/product/index.html
 client/coverage/src/components/product/Product.tsx.html
 client/.vscode/folders.md
+client/.env
