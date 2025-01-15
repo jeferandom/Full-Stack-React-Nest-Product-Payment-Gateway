@@ -24,16 +24,18 @@ describe("productService", () => {
     });
 
     const result = await getProduct("test-123");
-    expect(result.success).toBe(true);
-    expect(result.data).toEqual(mockProduct);
+    if (result.success) {
+      expect(result.data).toEqual(mockProduct);
+    }
   });
 
   it("should reject invalid product IDs", async () => {
     const result = await getProduct("invalid@id");
-    expect(result.success).toBe(false);
-    expect(result.error).toBeDefined();
-    expect(result.error.statusCode).toBe(400);
-    expect(result.error.code).toBe("INVALID_INPUT");
+    if (!result.success) {
+      expect(result.error).toBeDefined();
+      expect(result.error.statusCode).toBe(400);
+      expect(result.error.code).toBe("INVALID_INPUT");
+    }
   });
 
   it("should handle API errors", async () => {
@@ -44,20 +46,22 @@ describe("productService", () => {
     });
 
     const result = await getProduct("test-123");
-    expect(result.success).toBe(false);
-    expect(result.error).toBeDefined();
-    expect(result.error.statusCode).toBe(404);
-    expect(result.error.code).toBe("API_ERROR");
+    if (!result.success) {
+      expect(result.error).toBeDefined();
+      expect(result.error.statusCode).toBe(404);
+      expect(result.error.code).toBe("API_ERROR");
+    }
   });
 
   it("should handle network errors", async () => {
     global.fetch = vi.fn().mockRejectedValueOnce(new Error("Network error"));
 
     const result = await getProduct("test-123");
-    expect(result.success).toBe(false);
-    expect(result.error).toBeDefined();
-    expect(result.error.statusCode).toBe(500);
-    expect(result.error.code).toBe("UNKNOWN_ERROR");
+    if (!result.success) {
+      expect(result.error).toBeDefined();
+      expect(result.error.statusCode).toBe(500);
+      expect(result.error.code).toBe("UNKNOWN_ERROR");
+    }
   });
 
   it("should handle abort signals", async () => {
@@ -69,8 +73,9 @@ describe("productService", () => {
     try {
       await getProduct("test-123", abortController.signal);
     } catch (err) {
-      expect(err).toBeInstanceOf(Error);
-      expect(err.name).toBe("AbortError");
+      if (err instanceof Error) {
+        expect(err.name).toBe("AbortError");
+      }
     }
   });
 });

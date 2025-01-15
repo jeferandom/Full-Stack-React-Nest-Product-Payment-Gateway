@@ -10,6 +10,7 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:4200', // Angular
       'http://localhost:5173', // Vite
+      'http://dev-retail-app-front.us-east-1.elasticbeanstalk.com',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: [
@@ -19,7 +20,7 @@ async function bootstrap() {
       'Accept',
       'Authorization',
     ],
-    credentials: true,
+    credentials: false,
     exposedHeaders: ['Authorization'],
     maxAge: 3600,
   });
@@ -33,6 +34,6 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
-  await app.listen(Number(process.env.PORT) ?? 3000);
+  await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();

@@ -61,7 +61,12 @@ describe("useProduct", () => {
     const errorMessage = "API Error";
     vi.mocked(productService.getProduct).mockResolvedValueOnce({
       success: false,
-      error: { message: errorMessage },
+      error: {
+        message: errorMessage,
+        statusCode: 500,
+        code: "API_ERROR",
+        name: "ApiError",
+      },
     });
 
     const { result } = renderHook(() => useProduct("123"));

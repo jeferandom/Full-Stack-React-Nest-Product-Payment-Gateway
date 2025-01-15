@@ -6,7 +6,6 @@ import { OrderController } from './infrastructure/primary/http/controllers/order
 import { ProductController } from './infrastructure/primary/http/controllers/product.controller';
 
 import { MongoProductRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.product.repository.impl';
-import { PostgresProductRepositoryImpl } from './infrastructure/secondary/persistence/postgres/postgres.product.repository.impl';
 import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
 
 import { OrderService } from './core/application/services/order.service';
@@ -62,9 +61,10 @@ import { getModelToken } from '@nestjs/mongoose';
         configService: ConfigService,
         productModel: Model<ProductDocument>,
       ) => {
-        return configService.get('DB_TYPE') === 'postgres'
-          ? new PostgresProductRepositoryImpl()
-          : new MongoProductRepositoryImpl(productModel);
+        return (
+          configService.get('DB_TYPE') === 'mongodb' &&
+          new MongoProductRepositoryImpl(productModel)
+        );
       },
       inject: [ConfigService, getModelToken(Product.name)],
     },
