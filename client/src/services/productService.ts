@@ -46,7 +46,7 @@ export const getProduct = async (
 
     const data = await response.json();
     return { success: true, data };
-  } catch (err) {
+  } catch (err: unknown) {
     if (err instanceof Error && err.name === "AbortError") {
       // Propagar el error de abort para manejo específico
       throw err;
