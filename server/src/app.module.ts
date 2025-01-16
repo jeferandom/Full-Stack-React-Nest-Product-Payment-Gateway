@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './infrastructure/primary/http/controllers/app.controller';
 import { OrderController } from './infrastructure/primary/http/controllers/order.controller';
 import { ProductController } from './infrastructure/primary/http/controllers/product.controller';
+import { CreditCardController } from './core/application/controllers/credit-card.controller';
 
 import { MongoProductRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.product.repository.impl';
 import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
 
 import { OrderService } from './core/application/services/order.service';
 import { ProductService } from './core/application/services/product.service';
-import { CreditCardApplicationService } from './core/application/services/credit-card.service';
+import { CreditCardApplicationService } from './infrastructure/secondary/credit-card/credit-card.service';
 import { CreditCardValidatorService } from './core/domain/services/credit-card-validator.service';
 
 import { AppService } from './app.service';
@@ -46,8 +48,14 @@ import { getModelToken } from '@nestjs/mongoose';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    HttpModule,
   ],
-  controllers: [AppController, OrderController, ProductController],
+  controllers: [
+    AppController,
+    OrderController,
+    ProductController,
+    CreditCardController,
+  ],
   providers: [
     AppService,
     OrderService,
