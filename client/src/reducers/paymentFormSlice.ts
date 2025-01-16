@@ -8,6 +8,15 @@ interface PaymentFormState {
   error: string | null;
 }
 
+interface Inputs {
+  number: string;
+  card_holder: string;
+  installments: number;
+  address: string;
+  city: string;
+  country: string;
+}
+
 const initialState: PaymentFormState = {
   loading: true,
   paymentInfo: {
@@ -33,8 +42,8 @@ const paymentFormSlice = createSlice({
   name: "paymentForm",
   initialState,
   reducers: {
-    setPaymentInfo(state, action: PayloadAction<PaymentInfo>) {
-      state.paymentInfo = action.payload;
+    setPaymentInfo(state, action: PayloadAction<Partial<PaymentInfo>>) {
+      state.paymentInfo = { ...state.paymentInfo, ...action.payload };
     },
     setDeliveryInfo(state, action: PayloadAction<DeliveryInfo>) {
       state.deliveryInfo = action.payload;
@@ -45,10 +54,18 @@ const paymentFormSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    onSubmit(state, action: PayloadAction<Inputs>) {
+      console.log(action.payload);
+    },
   },
 });
 
-export const { setPaymentInfo, setDeliveryInfo, setError, setLoading } =
-  paymentFormSlice.actions;
+export const {
+  setPaymentInfo,
+  setDeliveryInfo,
+  setError,
+  setLoading,
+  onSubmit,
+} = paymentFormSlice.actions;
 
 export default paymentFormSlice.reducer;

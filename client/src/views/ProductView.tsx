@@ -1,6 +1,8 @@
 import { Backdrop, CircularProgress } from '@mui/material';
 import Product, { ProductType } from '../components/product/Product';
 import purify from 'dompurify';
+import { Link } from "react-router";
+
 
 interface ProductViewProps {
     loading: boolean;
@@ -29,8 +31,16 @@ export const ProductView: React.FC<ProductViewProps> = ({ loading, error, produc
             <div>Product not found</div>
         );
     }
+    const PayWithCardButton = () => {
+        return (
+            <Link to="/payment-form">Pay with Card</Link>
+        );
+    }
 
     return (
-        <Product product={product} />
+        <Product
+            product={product}
+            renderActions={() => <PayWithCardButton />}
+        />
     );
 };

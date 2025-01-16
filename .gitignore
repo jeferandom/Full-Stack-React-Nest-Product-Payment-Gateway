@@ -36,3 +36,4 @@ client/coverage/*
 client/.vscode/folders.md
 client/.env
 client/frontServer/*
+client/coverage/*

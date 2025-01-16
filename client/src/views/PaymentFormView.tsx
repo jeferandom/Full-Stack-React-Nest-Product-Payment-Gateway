@@ -1,6 +1,7 @@
 import { Backdrop, CircularProgress } from '@mui/material';
 import purify from 'dompurify';
-import PaymentForm, { PaymentInfo, DeliveryInfo, OrderItem } from '../components/payment/PaymentForm';
+import PaymentForm from '../components/payment/PaymentForm';
+import { PaymentInfo, DeliveryInfo } from '../types';
 
 
 interface PaymentFormViewProps {
@@ -9,7 +10,6 @@ interface PaymentFormViewProps {
     paymentForm?: {
         paymentInfo: PaymentInfo;
         deliveryInfo: DeliveryInfo;
-        orderItems?: OrderItem[];
     };
 }
 

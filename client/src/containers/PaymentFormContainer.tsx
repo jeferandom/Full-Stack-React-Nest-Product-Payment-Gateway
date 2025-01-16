@@ -8,10 +8,9 @@ const PaymentFormContainer: React.FC = () => {
         loading,
         paymentInfo,
         deliveryInfo,
-        orderItems,
         error
-    } = usePaymentForm([]);
-    return <PaymentFormView loading={loading} paymentForm={{ paymentInfo, deliveryInfo, orderItems }} error={error} />;
+    } = usePaymentForm();
+    return <PaymentFormView loading={loading} paymentForm={{ paymentInfo, deliveryInfo }} error={error} />;
 };
 
 export default PaymentFormContainer;
