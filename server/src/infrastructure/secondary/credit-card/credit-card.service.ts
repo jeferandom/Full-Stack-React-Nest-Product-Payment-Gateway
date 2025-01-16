@@ -3,6 +3,11 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { CreditCardValidatorService } from '../../../core/domain/services/credit-card-validator.service';
 import { CreditCardValidationDto } from '../../../core/application/dtos/credit-card-validation.dto';
+import {
+  CreditCardErrorResponse,
+  TokenizationResponse,
+} from '../../../core/domain/interfaces/credit-card-error.interface';
+import { catchError, firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class CreditCardApplicationService {
@@ -20,7 +25,9 @@ export class CreditCardApplicationService {
     );
   }
 
-  async validateAndTokenize(dto: CreditCardValidationDto) {
+  async validateAndTokenize(
+    dto: CreditCardValidationDto,
+  ): Promise<TokenizationResponse> {
     const validation = {
       isValid: this.creditCardValidator.validateCard(dto.number),
       cardType: this.creditCardValidator.identifyCardType(dto.number),
@@ -28,8 +35,16 @@ export class CreditCardApplicationService {
     };
 
     if (validation.isValid) {
-      const token = await this.tokenizeCard(dto);
-      return { ...validation, token };
+      try {
+        const token = await this.tokenizeCard(dto);
+        return { ...validation, token };
+      } catch (error) {
+        if (error?.response?.data) {
+          const errorResponse = error.response.data as CreditCardErrorResponse;
+          return { ...validation, error: errorResponse.error };
+        }
+        throw error;
+      }
     }
 
     return validation;
@@ -50,9 +65,15 @@ export class CreditCardApplicationService {
       card_holder: cardDetails.card_holder,
     };
 
-    const response = await this.httpService
-      .post(`${this.apiUrl}/tokens/cards`, payload, { headers })
-      .toPromise();
+    const response = await firstValueFrom(
+      this.httpService
+        .post(`${this.apiUrl}/tokens/cards`, payload, { headers })
+        .pipe(
+          catchError((error) => {
+            throw error;
+          }),
+        ),
+    );
 
     return response.data;
   }
