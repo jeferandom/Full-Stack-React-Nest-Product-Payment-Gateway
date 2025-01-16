@@ -8,7 +8,7 @@ const PaymentFormContainer: React.FC = () => {
         loading,
         paymentInfo,
         deliveryInfo,
-        error
+        error,
     } = usePaymentForm();
     return <PaymentFormView loading={loading} paymentForm={{ paymentInfo, deliveryInfo }} error={error} />;
 };

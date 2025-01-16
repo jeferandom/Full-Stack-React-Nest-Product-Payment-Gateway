@@ -20,3 +20,11 @@ export interface OrderItem {
   id: string;
   quantity: number;
 }
+
+export interface CreditCard {
+  number: string;
+  cvc: string;
+  exp_month: string;
+  exp_year: string;
+  card_holder: string;
+}

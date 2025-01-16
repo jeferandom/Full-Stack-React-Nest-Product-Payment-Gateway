@@ -26,6 +26,10 @@ export const useProduct = (productId: string | undefined) => {
         if (result.success) {
           setProduct(result.data);
           dispatch(setOrderItems([{ id: result.data.productId, quantity: 1 }]));
+          localStorage.setItem(
+            "orderItems",
+            JSON.stringify([{ id: result.data.productId, quantity: 1 }])
+          );
         } else {
           setError(result.error.message);
         }
