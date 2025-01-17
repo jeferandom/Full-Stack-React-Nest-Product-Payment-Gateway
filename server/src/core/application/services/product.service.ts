@@ -16,6 +16,10 @@ export class ProductService {
     return this.productRepository.findById(id);
   }
 
+  async getAllProducts(): Promise<Product[]> {
+    return this.productRepository.findAll();
+  }
+
   async seed(): Promise<Product[]> {
     return this.productRepository.seed();
   }

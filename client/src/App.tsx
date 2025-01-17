@@ -3,6 +3,7 @@ import './App.css'
 import SingleProductPage from './pages/SingleProductPage.tsx'
 import PaymentFormPage from './pages/PaymentFormPage.tsx'
 import OrderSummaryPage from './pages/OrderSummaryPage.tsx'
+import ProductsPage from './pages/ProductsPage.tsx'
 
 function App() {
 
@@ -12,7 +13,9 @@ function App() {
         <Routes>
           <Route path="/product/:productId" element={<SingleProductPage />} />
           <Route path="/payment-form" element={<PaymentFormPage />} />          
-          <Route path="/order-summary" element={<OrderSummaryPage />} />          
+          <Route path="/order-summary" element={<OrderSummaryPage />} /> 
+          <Route path="/" element={<ProductsPage />} /> 
+
         </Routes>
       </BrowserRouter>
     </>

@@ -42,6 +42,26 @@ export class MongoProductRepositoryImpl implements ProductRepository {
     }
   }
 
+  async findAll(): Promise<ProductEntity[]> {
+    try {
+      const products = await this.productModel.find().lean().exec();
+      return products.map(
+        (product) =>
+          new ProductEntity(
+            product.productId,
+            product.name,
+            product.price,
+            product.description,
+            product.image,
+            product.unitsInStock,
+            product.unitsOnOrder,
+          ),
+      );
+    } catch (error) {
+      throw new Error(`Error finding products: ${error.message}`);
+    }
+  }
+
   async seed(): Promise<ProductEntity[]> {
     const seededProducts: ProductEntity[] = [];
     await this.clear();
