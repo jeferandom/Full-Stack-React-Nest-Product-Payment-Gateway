@@ -37,3 +37,4 @@ client/.env
 client/frontServer/*
 client/coverage/*
 server/.vscode/*
+server/.ebextensions/https-instance.config

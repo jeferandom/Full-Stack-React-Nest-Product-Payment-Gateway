@@ -1,7 +1,9 @@
 import { Backdrop, CircularProgress } from '@mui/material';
-import Product, { ProductType } from '../components/product/Product';
 import purify from 'dompurify';
 import { useNavigate } from 'react-router';
+import { ProductType } from '../components/product/Product';
+import { CardProduct } from '../components/product/CardProduct';
+import '../styles/products.css'; // Añadir esta importación
 
 interface ProductsViewProps {
     loading: boolean;
@@ -32,22 +34,24 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ loading, error, prod
     }
 
     return (
-        <div className="products-grid">
-            {products.map((product) => (
-                <Product
-                    key={product.productId}
-                    product={product}
-                    className="product-card"
-                    renderActions={() => (
-                        <button
-                            onClick={() => navigate(`/product/${product.productId}`)}
-                            className="view-details-button"
-                        >
-                            View Details
-                        </button>
-                    )}
-                />
-            ))}
+        <div className="products-grid-container">
+            <div className="products-grid-wrapper">
+                {products.map((product) => (
+                    <div className="product-grid-item" key={product.productId}>
+                        <CardProduct
+                            product={product}
+                            renderActions={() => (
+                                <button
+                                    onClick={() => navigate(`/product/${product.productId}`)}
+                                    className="view-details-button"
+                                >
+                                    Ver
+                                </button>
+                            )}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

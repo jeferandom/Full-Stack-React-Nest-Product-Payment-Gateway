@@ -33,7 +33,7 @@ export const ProductView: React.FC<ProductViewProps> = ({ loading, error, produc
     }
     const PayWithCardButton = () => {
         return (
-            <Link to="/payment-form">Pay with Card</Link>
+            <Link to="/payment-form">Paga con Tarjeta</Link>
         );
     }
 

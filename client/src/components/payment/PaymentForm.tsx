@@ -219,7 +219,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.exp_month && <span>This field is required</span>}
+                {errors.exp_month && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.exp_year}
@@ -236,7 +236,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.exp_year && <span>This field is required</span>}
+                {errors.exp_year && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.cvc}
@@ -251,7 +251,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         required: true,
                     })}
                 />
-                {errors.cvc && <span>This field is required</span>}
+                {errors.cvc && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.card_holder}
@@ -266,7 +266,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.card_holder && <span>This field is required</span>}
+                {errors.card_holder && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.idType}
@@ -287,7 +287,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                     <option value="cc">Cédula de ciudadanía</option>
                     <option value="passport">Pasaporte</option>
                 </StyledTextField>
-                {errors.idType && <span>This field is required</span>}
+                {errors.idType && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.idNumber}
@@ -302,7 +302,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.idNumber && <span>This field is required</span>}
+                {errors.idNumber && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.installments}
@@ -317,7 +317,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.installments && <span>This field is required</span>}
+                {errors.installments && <span>Campo obligatorio</span>}
 
                 <StyledTextField
                     error={!!errors.address}
@@ -332,7 +332,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                         onBlur: handleBlur,
                     })}
                 />
-                {errors.address && <span>This field is required</span>}
+                {errors.address && <span>Campo obligatorio</span>}
 
                 <ContinueButton />
             </FormContainer>
