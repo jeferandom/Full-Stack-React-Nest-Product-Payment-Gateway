@@ -24,4 +24,9 @@ export class PostgresProductRepositoryImpl implements ProductRepository {
     console.log('PostgreSQL: Seeding products (temporary implementation)');
     return [];
   }
+
+  async findAll(): Promise<Product[]> {
+    console.log('PostgreSQL: Finding all products (temporary implementation)');
+    return [];
+  }
 }

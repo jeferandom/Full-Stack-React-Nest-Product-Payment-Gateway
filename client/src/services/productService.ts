@@ -57,3 +57,41 @@ export const getProduct = async (
     };
   }
 };
+
+export const getProducts = async (
+  signal?: AbortSignal
+): Promise<Result<Product[]>> => {
+  try {
+    const response = await fetch(`${API_URL}/products`, {
+      signal,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    });
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: new ApiError(
+          response.status,
+          (await response.text()) || "Failed to fetch products",
+          "API_ERROR"
+        ),
+      };
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name === "AbortError") {
+      // Propagar el error de abort para manejo específico
+      throw err;
+    }
+    return {
+      success: false,
+      error: new ApiError(500, "Internal error", "UNKNOWN_ERROR"),
+    };
+  }
+};

@@ -13,6 +13,11 @@ export class ProductController {
     return this.productService.getProduct(id);
   }
 
+  @Get()
+  async getAllProducts(): Promise<Product[]> {
+    return this.productService.getAllProducts();
+  }
+
   @Post('populate')
   async populateProductsDatabase(): Promise<Product[]> {
     return this.productService.seed();

@@ -17,7 +17,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             <Container maxWidth={maxWidth}>
                 {title && (
                     <Box component="header" sx={{ mb: 4 }}>
-                        <h1>{title}</h1>
+                        <h2>{title}</h2>
                     </Box>
                 )}
                 {children}
