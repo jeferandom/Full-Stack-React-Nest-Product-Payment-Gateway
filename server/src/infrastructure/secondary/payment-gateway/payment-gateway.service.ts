@@ -19,6 +19,26 @@ interface MerchantInfoResponse {
   };
 }
 
+interface TransactionResponse {
+  data: {
+    id: string;
+    created_at: string;
+    amount_in_cents: number;
+    reference: string;
+    customer_email: string;
+    currency: string;
+    status: string;
+    status_message: string;
+    redirect_url?: string;
+    payment_method: {
+      type: string;
+      extra: {
+        last_four: string;
+      };
+    };
+  };
+}
+
 @Injectable()
 export class PaymentGatewayService {
   private readonly apiUrl: string;
@@ -49,6 +69,33 @@ export class PaymentGatewayService {
       const response = await firstValueFrom(
         this.httpService
           .post(`${this.apiUrl}/transactions`, transactionDto, { headers })
+          .pipe(
+            catchError((error) => {
+              throw error;
+            }),
+          ),
+      );
+
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return error.response.data as ErrorResponseTransactionPaymentGateway;
+      }
+      throw error;
+    }
+  }
+
+  async getTransaction(
+    transactionId: string,
+  ): Promise<TransactionResponse | ErrorResponseTransactionPaymentGateway> {
+    const headers = {
+      Authorization: this.authorizationToken,
+    };
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService
+          .get(`${this.apiUrl}/transactions/${transactionId}`, { headers })
           .pipe(
             catchError((error) => {
               throw error;
