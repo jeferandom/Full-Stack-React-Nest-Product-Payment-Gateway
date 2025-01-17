@@ -1,7 +1,7 @@
 import { Order } from '../../entities/order.entity';
 
 export interface OrderRepository {
-  save(order: Order): Promise<void>;
+  create(order: Order): Promise<Order>;
   findById(id: string): Promise<Order | null>;
 }
 

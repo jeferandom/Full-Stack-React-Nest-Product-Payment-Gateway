@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setOrderItems } from "../../reducers/orderSlice.ts";
+
 import {
   getProduct,
   Product as ProductType,
 } from "../../services/productService";
 
 export const useProduct = (productId: string | undefined) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<ProductType | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +25,11 @@ export const useProduct = (productId: string | undefined) => {
 
         if (result.success) {
           setProduct(result.data);
+          dispatch(setOrderItems([{ id: result.data.productId, quantity: 1 }]));
+          localStorage.setItem(
+            "orderItems",
+            JSON.stringify([{ id: result.data.productId, quantity: 1 }])
+          );
         } else {
           setError(result.error.message);
         }
@@ -36,7 +45,7 @@ export const useProduct = (productId: string | undefined) => {
 
     fetchProduct();
     return () => abortController.abort();
-  }, [productId]);
+  }, [productId, dispatch]);
 
   return { loading, product, error };
 };

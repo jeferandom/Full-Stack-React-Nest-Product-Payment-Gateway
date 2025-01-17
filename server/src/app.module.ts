@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './infrastructure/primary/http/controllers/app.controller';
 import { OrderController } from './infrastructure/primary/http/controllers/order.controller';
 import { ProductController } from './infrastructure/primary/http/controllers/product.controller';
+import { CreditCardController } from './core/application/controllers/credit-card.controller';
 
 import { MongoProductRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.product.repository.impl';
-import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
+import { MongoOrderRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.order.repository.impl';
 
 import { OrderService } from './core/application/services/order.service';
 import { ProductService } from './core/application/services/product.service';
-import { CreditCardApplicationService } from './core/application/services/credit-card.service';
+import { CreditCardApplicationService } from './infrastructure/secondary/credit-card/credit-card.service';
 import { CreditCardValidatorService } from './core/domain/services/credit-card-validator.service';
 
 import { AppService } from './app.service';
@@ -25,7 +27,13 @@ import {
   ProductSchema,
   ProductDocument,
 } from './infrastructure/secondary/persistence/mongodb/schemas/product.schema';
+import {
+  Order,
+  OrderDocument,
+  OrderSchema,
+} from './infrastructure/secondary/persistence/mongodb/schemas/order.schema';
 import { getModelToken } from '@nestjs/mongoose';
+import { PaymentGatewayService } from './infrastructure/secondary/payment-gateway/payment-gateway.service';
 
 @Module({
   imports: [
@@ -45,16 +53,38 @@ import { getModelToken } from '@nestjs/mongoose';
       },
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    MongooseModule.forFeature([
+      { name: Product.name, schema: ProductSchema },
+      { name: Order.name, schema: OrderSchema },
+    ]),
+    HttpModule,
   ],
-  controllers: [AppController, OrderController, ProductController],
+  controllers: [
+    AppController,
+    OrderController,
+    ProductController,
+    CreditCardController,
+  ],
   providers: [
     AppService,
     OrderService,
     ProductService,
     CreditCardValidatorService,
     CreditCardApplicationService,
-    { provide: ORDER_REPOSITORY, useClass: OrderRepositoryImpl },
+    PaymentGatewayService,
+    {
+      provide: ORDER_REPOSITORY,
+      useFactory: (
+        configService: ConfigService,
+        orderModel: Model<OrderDocument>,
+      ) => {
+        return (
+          configService.get('DB_TYPE') === 'mongodb' &&
+          new MongoOrderRepositoryImpl(orderModel)
+        );
+      },
+      inject: [ConfigService, getModelToken(Order.name)],
+    },
     {
       provide: PRODUCT_REPOSITORY,
       useFactory: (

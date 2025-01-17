@@ -7,4 +7,13 @@ export default defineConfig({
   build: {
     sourcemap: process.env.NODE_ENV === "development",
   },
+  test: {
+    //TODO: Solve  The last overload error.type 'UserConfigExport'
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/setupTests.ts",
+    coverage: {
+      provider: "istanbul", // or 'v8'
+    },
+  },
 });

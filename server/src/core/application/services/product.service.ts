@@ -19,4 +19,17 @@ export class ProductService {
   async seed(): Promise<Product[]> {
     return this.productRepository.seed();
   }
+
+  async calculateTotalAmount(
+    items: { id: string; quantity: number }[],
+  ): Promise<number> {
+    let totalAmount = 0;
+    for (const item of items) {
+      const product = await this.getProduct(item.id);
+      if (product) {
+        totalAmount += product.price * item.quantity * 100;
+      }
+    }
+    return totalAmount;
+  }
 }
