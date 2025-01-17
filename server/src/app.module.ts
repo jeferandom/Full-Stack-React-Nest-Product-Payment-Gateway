@@ -33,6 +33,7 @@ import {
   OrderSchema,
 } from './infrastructure/secondary/persistence/mongodb/schemas/order.schema';
 import { getModelToken } from '@nestjs/mongoose';
+import { PaymentGatewayService } from './infrastructure/secondary/payment-gateway/payment-gateway.service';
 
 @Module({
   imports: [
@@ -70,6 +71,7 @@ import { getModelToken } from '@nestjs/mongoose';
     ProductService,
     CreditCardValidatorService,
     CreditCardApplicationService,
+    PaymentGatewayService,
     {
       provide: ORDER_REPOSITORY,
       useFactory: (

@@ -1,20 +1,40 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Order } from '../../domain/entities/order.entity';
 import {
   OrderRepository,
   ORDER_REPOSITORY,
 } from '../../../core/domain/interfaces/secondary/order.repository';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class OrderService {
   constructor(
     @Inject(ORDER_REPOSITORY) private readonly orderRepository: OrderRepository,
+    private readonly configService: ConfigService,
   ) {}
+
+  generateReference(): string {
+    return Math.random().toString(36).substring(2, 18);
+  }
+
+  generateSignature(
+    reference: string,
+    totalAmount: number,
+    currency: string,
+  ): string {
+    const integrityKey = this.configService.get<string>(
+      'PAYMENT_GATEWAY_INTEGRITY_KEY',
+    );
+    const concatenatedString = `${reference}${totalAmount}${currency}${integrityKey}`;
+    return createHash('sha256').update(concatenatedString).digest('hex');
+  }
 
   async createOrder(
     items: { id: string; quantity: number }[],
     customerId: string,
     status: string,
+    customer_email: string,
     deliveryInfo: { address: string; city: string; country: string },
     cardToken: string,
     lastFourDigits: string,
@@ -35,6 +55,7 @@ export class OrderService {
       items,
       customerId,
       status,
+      customer_email,
       deliveryInfo,
       new Date(),
       cardToken,
@@ -42,8 +63,6 @@ export class OrderService {
       0,
       transaction,
     );
-    order.calculateTotal();
-    console.log('Creating order:', order); // Log para verificar
     await this.orderRepository.create(order);
     return order;
   }

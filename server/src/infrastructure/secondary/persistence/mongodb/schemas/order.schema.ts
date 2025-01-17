@@ -16,7 +16,8 @@ export class Order {
 
   @Prop({ required: true })
   status: string;
-
+  @Prop({ required: true })
+  customer_email: string;
   @Prop({
     required: true,
     type: { address: String, city: String, country: String },
@@ -105,60 +106,4 @@ export interface CreditCard {
   exp_month: string;
   exp_year: string;
   card_holder: string;
-}
-
-export interface requestTransactionPaymentGateway {
-  payment_method: {
-    type: string;
-    token: string;
-    installments: number;
-  };
-  customer_email: string;
-  acceptance_token: string;
-  accept_personal_auth: string;
-  amount_in_cents: number;
-  currency: string;
-  reference: string;
-  signature: string;
-}
-
-export interface responseTransactionPaymentGateway {
-  data: {
-    id: string;
-    created_at: string;
-    finalized_at: string;
-    amount_in_cents: number;
-    reference: string;
-    customer_email: string;
-    currency: string;
-    payment_method_type: string;
-    payment_method: {
-      type: string;
-      extra: {
-        bin: string;
-        name: string;
-        brand: string;
-        exp_year: string;
-        card_type: string;
-        exp_month: string;
-        last_four: string;
-        card_holder: string;
-        is_three_ds: boolean;
-        three_ds_auth_type: string;
-      };
-      installments: number;
-    };
-    status: string;
-    status_message: string;
-    billing_data: string;
-    shipping_address: string;
-    redirect_url: string;
-    payment_source_id: string;
-    payment_link_id: string;
-    customer_data: string;
-    bill_id: string;
-    taxes: [];
-    tip_in_cents: string;
-  };
-  meta: any;
 }

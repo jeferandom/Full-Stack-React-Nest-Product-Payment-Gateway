@@ -12,6 +12,7 @@ export class OrderController {
       orderData.items,
       orderData.customerId,
       orderData.status,
+      orderData.customer_email,
       orderData.deliveryInfo,
       orderData.cardToken,
       orderData.lastFourDigits,

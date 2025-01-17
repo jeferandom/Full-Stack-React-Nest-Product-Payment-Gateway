@@ -4,6 +4,7 @@ export class Order {
     public items: { id: string; quantity: number }[],
     public customerId: string,
     public status: string,
+    public customer_email: string,
     public deliveryInfo: { address: string; city: string; country: string },
     public createdAt: Date,
     public cardToken: string,
@@ -21,8 +22,4 @@ export class Order {
       redirect_url: string;
     },
   ) {}
-
-  calculateTotal() {
-    this.total = this.items.reduce((sum, item) => sum + item.quantity, 0);
-  }
 }
