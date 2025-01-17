@@ -7,8 +7,8 @@ import {
   setPaymentInfo,
   setDeliveryInfo,
 } from "../../reducers/paymentFormSlice";
-
 import { getProduct, Product } from "../../services/productService";
+import { createOrder } from "../../services/orderService";
 
 interface UseOrderSummaryResult {
   loading: boolean;
@@ -16,6 +16,7 @@ interface UseOrderSummaryResult {
   orderItems: OrderItemPopulated[];
   paymentInfo: PaymentInfo;
   deliveryInfo: DeliveryInfo;
+  createOrder: () => Promise<void>;
 }
 
 export interface OrderItemPopulated extends Product {
@@ -44,35 +45,6 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
             dispatch(setOrderItems(JSON.parse(savedOrderItems)));
           }
         }
-
-        const savedFormState = localStorage.getItem("paymentFormState");
-
-        if (savedFormState) {
-          const parsedState = JSON.parse(savedFormState);
-
-          dispatch(
-            setPaymentInfo({
-              number: parsedState.number,
-              card_holder: parsedState.card_holder,
-              exp_month: parsedState.exp_month,
-              exp_year: parsedState.exp_year,
-              id_type: parsedState.idType,
-              id_number: parsedState.idNumber,
-              installments: parsedState.installments,
-              customer_email: "jefmancera@test.com",
-            })
-          );
-
-          dispatch(
-            setDeliveryInfo({
-              address: parsedState.address,
-              city: parsedState.city,
-              country: parsedState.country,
-            })
-          );
-        }
-
-        setLoading(true);
         const populatedItems = await Promise.all(
           orderItems.map(async (item) => {
             const result = await getProduct(item.id);
@@ -99,11 +71,47 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
     fetchProducts();
   }, [orderItems, dispatch]);
 
+  const handleCreateOrder = async () => {
+    try {
+      setLoading(true);
+      const orderData = {
+        items: orderItems.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
+        customerId: "123",
+        status: "PENDING" as const,
+        customer_email: paymentInfo.customer_email,
+        deliveryInfo,
+        cardToken: "tok_test",
+        cardInfo: {
+          number: paymentInfo.number,
+          cvc: paymentInfo.cvc,
+          exp_month: paymentInfo.exp_month,
+          exp_year: paymentInfo.exp_year,
+          card_holder: paymentInfo.card_holder,
+        },
+      };
+
+      const result = await createOrder(orderData);
+
+      if (!result.success) {
+        throw new Error(result.error.message);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create order");
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     orderItems: populatedOrderItems,
     paymentInfo,
     deliveryInfo,
     error,
+    createOrder: handleCreateOrder,
   };
 };

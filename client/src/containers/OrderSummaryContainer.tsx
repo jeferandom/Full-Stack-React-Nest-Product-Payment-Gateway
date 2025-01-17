@@ -9,6 +9,7 @@ const OrderSummaryContainer: React.FC = () => {
         paymentInfo,
         deliveryInfo,
         error,
+        createOrder
     } = useOrderSummary();
     return <OrderSummaryView
         error={error}
@@ -16,6 +17,7 @@ const OrderSummaryContainer: React.FC = () => {
         orderItems={orderItems}
         paymentInfo={paymentInfo}
         deliveryInfo={deliveryInfo}
+        createOrder={createOrder}
     />;
 };
 

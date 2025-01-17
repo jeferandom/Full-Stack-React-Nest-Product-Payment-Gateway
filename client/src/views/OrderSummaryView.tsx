@@ -10,10 +10,17 @@ interface OrderSummaryViewProps {
     orderItems: OrderItemPopulated[];
     paymentInfo: PaymentInfo;
     deliveryInfo: DeliveryInfo;
+    createOrder: () => void;
 }
 
-export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({ loading, error, orderItems, paymentInfo,
-    deliveryInfo }) => {
+export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({
+    loading,
+    error,
+    orderItems,
+    paymentInfo,
+    deliveryInfo,
+    createOrder
+}) => {
 
     if (loading) {
         return (
@@ -37,6 +44,6 @@ export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({ loading, err
     }   
 
     return (
-        <OrderSummary orderItems={orderItems} paymentInfo={paymentInfo} deliveryInfo={deliveryInfo} />
+        <OrderSummary orderItems={orderItems} paymentInfo={paymentInfo} deliveryInfo={deliveryInfo} createOrder={createOrder} />
     );
 };

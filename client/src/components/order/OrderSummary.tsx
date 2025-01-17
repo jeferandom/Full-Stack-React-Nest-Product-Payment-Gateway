@@ -5,15 +5,16 @@ interface OrderSummaryProps {
     orderItems: OrderItemPopulated[];
     paymentInfo: PaymentInfo;
     deliveryInfo: DeliveryInfo;
+    createOrder: () => void;
 }
-const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo, createOrder }) => {
 
 
     return (
         <>
-            <h2>Información de envío</h2>
+            <h3>Información de envío</h3>
             <p>Dirección: {deliveryInfo.address}</p>
-            <h2>Información de pago</h2>
+            <h3>Información de pago</h3>
             <ul>
                 {orderItems.map((item, index) => (
                     <li key={index}>
@@ -24,6 +25,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo })
             <strong>
                 <p>Total: ${orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}</p>
             </strong>
+
+            <button
+                onClick={() => {
+                    createOrder();
+                }}
+            >Confirmar compra</button>
 
         </>
     );

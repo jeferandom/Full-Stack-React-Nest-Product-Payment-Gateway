@@ -32,7 +32,7 @@ type Inputs = {
 const FormContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    gap: '1rem', // Adds consistent spacing between all fields
+    gap: '1rem', 
     padding: '1rem',
 }));
 
@@ -49,7 +49,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
         color: theme.palette.error.main,
         marginLeft: 0,
     },
-    // Add specific styles for error state
+
     '&.Mui-error': {
         '& label': {
             color: theme.palette.error.main,
@@ -62,7 +62,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 const PaymentForm: React.FC<PaymentFormProps> = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Add this hook
+    const navigate = useNavigate(); 
 
     const { register, handleSubmit, formState: { errors }, setError, clearErrors, watch, setValue } = useForm<Inputs>();
     const [cardType, setCardType] = useState<string | null>(null);
@@ -104,7 +104,6 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
         setCardType(type);
 
         const validated = validator.validateCard(value)
-        // Validate card while typing only when not masked
         if (!validated) {
                 setError("number", { type: "manual", message: "Invalid card number" });
             } else {
@@ -160,7 +159,6 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
             });
 
             dispatch(setPaymentInfo({
-                number: parsedState.number,
                 card_holder: parsedState.card_holder,
                 exp_month: parsedState.exp_month,
                 exp_year: parsedState.exp_year,
