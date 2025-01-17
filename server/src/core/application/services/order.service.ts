@@ -11,10 +11,40 @@ export class OrderService {
     @Inject(ORDER_REPOSITORY) private readonly orderRepository: OrderRepository,
   ) {}
 
-  async createOrder(items: string[]): Promise<Order> {
-    const order = new Order(Math.random().toString(), items, 0);
+  async createOrder(
+    items: { id: string; quantity: number }[],
+    customerId: string,
+    status: string,
+    deliveryInfo: { address: string; city: string; country: string },
+    cardToken: string,
+    lastFourDigits: string,
+    transaction?: {
+      id: string;
+      created_at: string;
+      amount_in_cents: number;
+      reference: string;
+      customer_email: string;
+      currency: string;
+      status: string;
+      status_message: string;
+      redirect_url: string;
+    },
+  ): Promise<Order> {
+    const order = new Order(
+      Math.random().toString(),
+      items,
+      customerId,
+      status,
+      deliveryInfo,
+      new Date(),
+      cardToken,
+      lastFourDigits,
+      0,
+      transaction,
+    );
     order.calculateTotal();
-    await this.orderRepository.save(order);
+    console.log('Creating order:', order); // Log para verificar
+    await this.orderRepository.create(order);
     return order;
   }
 

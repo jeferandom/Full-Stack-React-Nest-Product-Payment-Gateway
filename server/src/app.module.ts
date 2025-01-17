@@ -8,7 +8,7 @@ import { ProductController } from './infrastructure/primary/http/controllers/pro
 import { CreditCardController } from './core/application/controllers/credit-card.controller';
 
 import { MongoProductRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.product.repository.impl';
-import { OrderRepositoryImpl } from './infrastructure/secondary/persistence/order.repository.impl';
+import { MongoOrderRepositoryImpl } from './infrastructure/secondary/persistence/mongodb/mongo.order.repository.impl';
 
 import { OrderService } from './core/application/services/order.service';
 import { ProductService } from './core/application/services/product.service';
@@ -27,6 +27,11 @@ import {
   ProductSchema,
   ProductDocument,
 } from './infrastructure/secondary/persistence/mongodb/schemas/product.schema';
+import {
+  Order,
+  OrderDocument,
+  OrderSchema,
+} from './infrastructure/secondary/persistence/mongodb/schemas/order.schema';
 import { getModelToken } from '@nestjs/mongoose';
 
 @Module({
@@ -47,7 +52,10 @@ import { getModelToken } from '@nestjs/mongoose';
       },
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    MongooseModule.forFeature([
+      { name: Product.name, schema: ProductSchema },
+      { name: Order.name, schema: OrderSchema },
+    ]),
     HttpModule,
   ],
   controllers: [
@@ -62,7 +70,19 @@ import { getModelToken } from '@nestjs/mongoose';
     ProductService,
     CreditCardValidatorService,
     CreditCardApplicationService,
-    { provide: ORDER_REPOSITORY, useClass: OrderRepositoryImpl },
+    {
+      provide: ORDER_REPOSITORY,
+      useFactory: (
+        configService: ConfigService,
+        orderModel: Model<OrderDocument>,
+      ) => {
+        return (
+          configService.get('DB_TYPE') === 'mongodb' &&
+          new MongoOrderRepositoryImpl(orderModel)
+        );
+      },
+      inject: [ConfigService, getModelToken(Order.name)],
+    },
     {
       provide: PRODUCT_REPOSITORY,
       useFactory: (

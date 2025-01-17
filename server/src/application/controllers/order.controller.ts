@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
-import { OrderService } from '../../../../core/application/services/order.service';
-import { Order } from '../../../../core/domain/entities/order.entity';
+import { Controller, Post, Body } from '@nestjs/common';
+import { OrderService } from '../../core/application/services/order.service';
+import { Order } from '../../core/domain/entities/order.entity';
 
 @Controller('orders')
 export class OrderController {
@@ -17,10 +17,5 @@ export class OrderController {
       orderData.lastFourDigits,
       orderData.transaction,
     );
-  }
-
-  @Get(':id')
-  async getOrder(@Param('id') id: string): Promise<Order | null> {
-    return this.orderService.getOrder(id);
   }
 }

@@ -37,3 +37,4 @@ client/.vscode/folders.md
 client/.env
 client/frontServer/*
 client/coverage/*
+server/.vscode/settings.json

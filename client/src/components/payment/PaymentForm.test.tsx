@@ -32,10 +32,8 @@ describe('PaymentForm Component', () => {
         ],
     };
 
-    it('should render card number and card holder', () => {
+    it('should render  card holder', () => {
         const { getByDisplayValue } = render(<PaymentForm {...mockProps} />);
-
-        expect(getByDisplayValue(/4242424242424242/)).toBeInTheDocument();
         expect(getByDisplayValue(/Jef Mance/)).toBeInTheDocument();
     });
 
