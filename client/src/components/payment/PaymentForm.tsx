@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { PaymentInfo, DeliveryInfo, OrderItem } from '../../types';
 import { TextField, InputAdornment } from '@mui/material';
 import { tokenize, CreditCardValidatorService } from "../../services/creditCardService";
+import { Link } from "react-router";
+
 import {
     AccessAlarmSharp as VisaIcon,
     AcUnitSharp as MastercardIcon,
@@ -32,10 +34,7 @@ type Inputs = {
     address: string;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({
-    paymentInfo,
-    deliveryInfo,
-}) => {
+const PaymentForm: React.FC<PaymentFormProps> = () => {
     const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors }, setError, clearErrors, watch, setValue } = useForm<Inputs>();
@@ -131,14 +130,20 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         }
     }, [setValue]);
 
+    const ContinueButton = () => {
+        return (
+            <Link to="/order-summary">Continuar</Link>
+        );
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
             <TextField
                 type="tel"
                 fullWidth
                 label="Número de la tarjeta"
-                id="number"        
-                helperText={errors.number ? errors.number.message : ''}        
+                id="number"
+                helperText={errors.number ? errors.number.message : ''}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -149,7 +154,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                 {...register("number", {
                     required: true,
                     onChange: handleCardNumberChange,
-                    onBlur: handleBlur,                    
+                    onBlur: handleBlur,
                 })}
             />
             {errors.number && <span>This field is required</span>}
@@ -266,7 +271,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             />
             {errors.address && <span>This field is required</span>}
 
-            <button type="submit" value='Continuar' />
+            <ContinueButton />
         </form>
     );
 }
