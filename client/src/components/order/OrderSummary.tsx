@@ -1,27 +1,32 @@
 import React from 'react';
+import { OrderItemPopulated } from '../../hooks/order/useOrderSummary';
+import { PaymentInfo, DeliveryInfo } from '../../types';
+interface OrderSummaryProps {
+    orderItems: OrderItemPopulated[];
+    paymentInfo: PaymentInfo;
+    deliveryInfo: DeliveryInfo;
+}
+const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo }) => {
 
 
-
-const OrderSummary: React.FC = () => {
-    // const tokenResult = await tokenize({
-    //             number: data.number,
-    //             cvc: data.cvc,
-    //             exp_month: data.exp_month,
-    //             exp_year: data.exp_year,
-    //             card_holder: data.card_holder,
-    //         });
-
-
-    // localStorage.setItem("cardToken", JSON.stringify(tokenResult.data.tokenId));
-    // localStorage.setItem("lastFour", JSON.stringify(tokenResult.data.lastFour));
     return (
         <>
             <h2>Información de envío</h2>
+            <p>Dirección: {deliveryInfo.address}</p>
             <h2>Información de pago</h2>
-            <h2>Total</h2>
+            <ul>
+                {orderItems.map((item, index) => (
+                    <li key={index}>
+                        {item.name} - {item.quantity} x ${item.price}
+                    </li>
+                ))}
+            </ul>
+            <strong>
+                <p>Total: ${orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}</p>
+            </strong>
+
         </>
     );
-
 }
 
 export default OrderSummary;

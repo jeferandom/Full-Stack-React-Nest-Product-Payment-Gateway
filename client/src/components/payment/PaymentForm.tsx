@@ -66,17 +66,16 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
 
     const { register, handleSubmit, formState: { errors }, setError, clearErrors, watch, setValue } = useForm<Inputs>();
     const [cardType, setCardType] = useState<string | null>(null);
-    const [isMaskedNumber, setIsMaskedNumber] = useState(false);
     const [originalNumber, setOriginalNumber] = useState<string>('');
     const validator = new CreditCardValidatorService();
 
     const onSubmitHandler: SubmitHandler<Inputs> = async (data) => {
-        if (!validator.validateCard(data.number)) {
+        if (!validator.validateCard(originalNumber)) {
             setError("number", { type: "manual", message: "Invalid card number" });
             return;
         }
         dispatch(setPaymentInfo({
-            number: data.number,
+            number: originalNumber,
             cvc: data.cvc,
             exp_month: data.exp_month,
             exp_year: data.exp_year,
@@ -89,8 +88,8 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
 
         dispatch(setDeliveryInfo({
             address: data.address,
-            city: '',
-            country: ''
+            city: 'Cali',
+            country: 'Colombia'
         }));
 
         navigate('/order-summary');
