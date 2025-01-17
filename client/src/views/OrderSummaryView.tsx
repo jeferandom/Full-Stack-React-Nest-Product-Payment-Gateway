@@ -11,6 +11,7 @@ interface OrderSummaryViewProps {
     paymentInfo: PaymentInfo;
     deliveryInfo: DeliveryInfo;
     createOrder: () => void;
+    transactionStatus: string | null;
 }
 
 export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({
@@ -19,7 +20,8 @@ export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({
     orderItems,
     paymentInfo,
     deliveryInfo,
-    createOrder
+    createOrder,
+    transactionStatus
 }) => {
 
     if (loading) {
@@ -44,6 +46,6 @@ export const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({
     }   
 
     return (
-        <OrderSummary orderItems={orderItems} paymentInfo={paymentInfo} deliveryInfo={deliveryInfo} createOrder={createOrder} />
+        <OrderSummary orderItems={orderItems} paymentInfo={paymentInfo} deliveryInfo={deliveryInfo} createOrder={createOrder} transactionStatus={transactionStatus} />
     );
 };

@@ -6,8 +6,9 @@ interface OrderSummaryProps {
     paymentInfo: PaymentInfo;
     deliveryInfo: DeliveryInfo;
     createOrder: () => void;
+    transactionStatus: string | null;
 }
-const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo, createOrder }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo, createOrder, transactionStatus }) => {
 
 
     return (
@@ -26,11 +27,19 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ orderItems, deliveryInfo, c
                 <p>Total: ${orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}</p>
             </strong>
 
+            {transactionStatus && (
+                <div>
+                    <h3>Estado de la transacción</h3>
+                    <p>{transactionStatus}</p>
+                </div>
+            )}
+
             <button
-                onClick={() => {
-                    createOrder();
-                }}
-            >Confirmar compra</button>
+                onClick={() => createOrder()}
+                disabled={transactionStatus === 'PENDING' || transactionStatus === 'APPROVED'}
+            >
+                {transactionStatus === 'PENDING' ? 'Procesando...' : 'Confirmar compra'}
+            </button>
 
         </>
     );

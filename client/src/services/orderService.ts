@@ -93,3 +93,48 @@ export const createOrder = async (
     };
   }
 };
+
+
+export const getTransaction = async (
+  transactionId: string
+): Promise<Result<Transaction>> => {
+  try {
+    const response = await fetch(
+      `${API_URL}/orders/transactions/${transactionId}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "same-origin",
+      }
+    );
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: new ApiError(
+          response.status,
+          (await response.text()) || "Failed to fetch transaction",
+          "API_ERROR"
+        ),
+      };
+    }
+
+    const data = await response.json();
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: new ApiError(
+        500,
+        err instanceof Error ? err.message : "Internal error",
+        "UNKNOWN_ERROR"
+      ),
+    };
+  }
+};

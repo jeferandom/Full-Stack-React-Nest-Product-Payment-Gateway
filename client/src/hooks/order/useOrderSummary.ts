@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { PaymentInfo, DeliveryInfo } from "../../types";
 import { setOrderItems } from "../../reducers/orderSlice";
-import {
-  setPaymentInfo,
-  setDeliveryInfo,
-} from "../../reducers/paymentFormSlice";
 import { getProduct, Product } from "../../services/productService";
-import { createOrder } from "../../services/orderService";
+import { createOrder, getTransaction } from "../../services/orderService";
 
 interface UseOrderSummaryResult {
   loading: boolean;
@@ -17,6 +13,7 @@ interface UseOrderSummaryResult {
   paymentInfo: PaymentInfo;
   deliveryInfo: DeliveryInfo;
   createOrder: () => Promise<void>;
+  transactionStatus: string | null;
 }
 
 export interface OrderItemPopulated extends Product {
@@ -35,6 +32,27 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
   const { paymentInfo, deliveryInfo } = useSelector(
     (state: RootState) => state.paymentForm
   );
+  const [transactionStatus, setTransactionStatus] = useState<string | null>(
+    null
+  );
+  const [transactionId, setTransactionId] = useState<string | null>(null);
+
+  const checkTransactionStatus = useCallback(async (transactionId: string) => {
+    try {
+      const result = await getTransaction(transactionId);
+      if (result.success) {
+        setTransactionStatus(result.data.status);
+      } else {
+        throw new Error(result.error.message);
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to check transaction status"
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -99,6 +117,13 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
         throw new Error(result.error.message);
       }
 
+      setTransactionId(result.data.transaction.id);
+
+      // Llamar al endpoint una sola vez después de 5 segundos
+      setTimeout(() => {
+        checkTransactionStatus(result.data.transaction.id);
+      }, 5000);
+
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create order");
@@ -113,5 +138,6 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
     deliveryInfo,
     error,
     createOrder: handleCreateOrder,
+    transactionStatus,
   };
 };
