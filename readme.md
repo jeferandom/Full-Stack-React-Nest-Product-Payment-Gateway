@@ -6,6 +6,10 @@ This is a monorepository with a NestJs and ReactJs/Vite project for a retail ful
 - Some TDD practices are applied
 - Integrated with a payment gateway
 
+# Demo Site
+https://dev-retail-app-front.us-east-1.elasticbeanstalk.com/
+
+
 # Environment Requirements
 - NodeJs Version: 22.12.0
 
@@ -33,5 +37,20 @@ This is a monorepository with a NestJs and ReactJs/Vite project for a retail ful
 # RESTful API Documentation
 [Go to the Postman collection here](https://www.postman.com/altimetry-explorer-80161005/workspace/product-payment-api-demo/collection/34406596-340ed140-9924-422e-bd4a-c2c6089974e5?action=share&creator=34406596&active-environment=34406596-cf070561-3f71-4238-b2f5-f5a6ad411d81)
 
+# Data to test credit card
+
+Number: `4242424242424242`
+
+Type: "Visa"
+
+Date: `12/34`
+
 # Mockup
 ![Mockup Image](<Pasted image 20250117041944.png>)
+
+# Screenshots
+![alt text](1.png)
+![alt text](2.png)
+![alt text](3.png)
+![alt text](4.png)
+![alt text](5.png)
