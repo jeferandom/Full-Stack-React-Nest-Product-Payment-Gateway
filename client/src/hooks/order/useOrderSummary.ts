@@ -35,7 +35,6 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
   const [transactionStatus, setTransactionStatus] = useState<string | null>(
     null
   );
-  const [transactionId, setTransactionId] = useState<string | null>(null);
 
   const checkTransactionStatus = useCallback(async (transactionId: string) => {
     try {
@@ -116,8 +115,6 @@ export const useOrderSummary = (): UseOrderSummaryResult => {
       if (!result.success) {
         throw new Error(result.error.message);
       }
-
-      setTransactionId(result.data.transaction.id);
 
       // Llamar al endpoint una sola vez después de 5 segundos
       setTimeout(() => {
