@@ -29,7 +29,7 @@ type Inputs = {
     address: string;
 }
 
-const FormContainer = styled('div')(({ theme }) => ({
+const FormContainer = styled('div')(() => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem', 
@@ -197,12 +197,12 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
                                 {getCardIcon(watch('number'))}
                             </InputAdornment>
                         ),
+                        onFocus: handleCardNumberFocus
                     }}
                     {...register("number", {
                         required: true,
                         onChange: handleCardNumberChange,
                         onBlur: handleCardNumberBlur,
-                        onFocus: handleCardNumberFocus
                     })}
                 />
 
