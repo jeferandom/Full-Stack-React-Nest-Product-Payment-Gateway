@@ -43,7 +43,7 @@ import { PaymentGatewayService } from './infrastructure/secondary/payment-gatewa
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const isLocal = configService.get('DB_HOST') === 'localhost';
+        const isLocal = configService.get('DB_ENVIRONMENT') === 'localhost';
         const uri = isLocal
           ? configService.get('DB_URI_MONGO_LOCAL')
           : configService.get('DB_URI_MONGO_SERVER');
