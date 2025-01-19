@@ -7,7 +7,7 @@ This is a monorepository with a NestJs and ReactJs/Vite project for a retail ful
 - Integrated with a payment gateway
 
 # Demo Site
-https://dev-retail-app-front.us-east-1.elasticbeanstalk.com/
+http://dev-retail-app-front.us-east-1.elasticbeanstalk.com/
 
 
 # Environment Requirements
